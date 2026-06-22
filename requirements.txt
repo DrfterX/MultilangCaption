@@ -1,0 +1,4 @@
+sherpa-onnx>=1.12
+PyAudioWPatch
+scipy
+numpy
