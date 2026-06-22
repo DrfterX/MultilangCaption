@@ -1,0 +1,28 @@
+# Models (800MB+) — auto-downloaded
+models/
+
+# Python virtual environment
+venv/
+
+# Runtime artifacts
+subtitle_status.txt
+subtitle_config.json
+__pycache__/
+*.pyc
+
+# Upstream dependencies (cloned separately)
+TMSpeech/
+TMSpeech_app/
+downloads/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.workbuddy/
+config/
+README_JA.md
+overview.md
+start_japanese.ps1
