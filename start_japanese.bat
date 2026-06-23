@@ -34,4 +34,4 @@ if not exist "%PYW%" (
 )
 
 type nul > "%SF%"
-start "" "%PYW%" "%DW%" -- "%PY%" "%SC%" --sense-voice="%SV%" --tokens="%TK%" --silero-vad-model="%VD%" --num-threads=4 --mix-mode=average --status-file="%SF%"
+start "" "%PYW%" "%DW%" -- "%PY%" "%SC%" --sense-voice="%SV%" --tokens="%TK%" --silero-vad-model="%VD%" --num-threads=4 --mix-mode=average --status-file="%SF%" --auto-device
