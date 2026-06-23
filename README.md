@@ -2,43 +2,38 @@
 
 **English** | [中文](README_CN.md)
 
-日本語・中文・English・한국어・粵語 のリアルタイム字幕オーバーレイ。  
 A borderless, semi-transparent real-time multilingual subtitle overlay for **Windows 10**.
 
 > **Why Windows 10?**  
 > Windows 11 and macOS Sequoia already have built-in live captions.  
 > This tool brings the same experience to Windows 10 — fully offline, no cloud required.
 
-## Screenshot
-
-```
-┌─────────────────────────────────────────────┐
-│  加藤さんには今ファンの消費期限のチェックを │
-│  して値引きシールを貼る作業をやってもらって  │
-└─────────────────────────────────────────────┘
-         ↑ floating, semi-transparent ↑
-```
+Supports: 中文 · English · 日本語 · 한국어 · 粵語
 
 ## Quick Start
 
-### 1. Install Python dependencies
-
 ```bash
+# 1. Install dependencies
 python -m venv venv
 venv\Scripts\pip install -r requirements.txt
-```
 
-### 2. Run
-
-```bash
+# 2. Launch
 start_japanese.bat
 ```
 
-First launch auto-downloads the SenseVoice model (~895MB, via ModelScope CDN, ~2 min).
+First launch auto-downloads the SenseVoice model (~895MB, via ModelScope CDN, ~2 min).  
+The overlay appears at the bottom-centre of your screen, auto-capturing your system audio.
+
+## Choosing Audio Device
+
+| Launcher | Behaviour |
+|----------|-----------|
+| **`start_japanese.bat`** | Default. Auto-selects your system speaker (loopback). No prompts. |
+| **`start_japanese_advanced.bat`** | Opens a device picker — choose speaker, microphone, or both. For multi-device setups. |
 
 ## Features
 
-- **Borderless overlay** — no title bar, drag to move, edge-drag to resize
+- **Borderless overlay** — no title bar; drag to move, edge-drag to resize
 - **Semi-transparent** — adjustable opacity (right-click menu)
 - **Fill-to-edge wrapping** — text fills every pixel before wrapping (CHAR mode)
 - **Always shows newest at bottom** — smooth incremental updates, no flicker
@@ -47,10 +42,11 @@ First launch auto-downloads the SenseVoice model (~895MB, via ModelScope CDN, ~2
 - **Always-on-top toggle** — right-click menu
 - **Zero console** — runs fully windowless via pythonw
 - **Fully offline** — no internet needed after model download
+- **Remembers settings** — font, colours, opacity, window position & size persist across restarts
 
 ## Supported Languages
 
-The SenseVoice model auto-detects language. All five are recognised:
+The SenseVoice model auto-detects language:
 
 | Language | Code |
 |----------|------|
@@ -75,7 +71,8 @@ System Audio → WASAPI Loopback → SenseVoice ASR → status file → tkinter 
 
 | File | Purpose |
 |------|---------|
-| `start_japanese.bat` | One-click launcher (auto-downloads model) |
+| `start_japanese.bat` | One-click launcher (auto-device, auto-downloads model) |
+| `start_japanese_advanced.bat` | Launcher with manual device picker |
 | `subtitle_window.py` | Subtitle display overlay |
 | `download_model.py` | Model downloader (ModelScope API, free & fast) |
 | `requirements.txt` | Python dependencies |
@@ -85,11 +82,11 @@ System Audio → WASAPI Loopback → SenseVoice ASR → status file → tkinter 
 
 SenseVoice multilingual model by Alibaba, converted to ONNX by [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx).
 
-- `model.onnx` — 895MB (full precision)
-- `tokens.txt` — 309KB vocabulary
-- `silero_vad.onnx` — 629KB voice activity detection
+- `model.onnx` — 895MB
+- `tokens.txt` — 309KB
+- `silero_vad.onnx` — 629KB
 
-Models are auto-downloaded on first run. No GitHub LFS required.
+Auto-downloaded on first run. No GitHub LFS needed.
 
 ## Credits & License
 
