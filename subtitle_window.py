@@ -118,6 +118,7 @@ class SubtitleWindow:
 
         self.root.bind("<Leave>", self._on_leave)
         self.root.bind("<Configure>", lambda e: self._redraw_if_needed())
+        self.root.bind("<ButtonRelease-1>", lambda e: self._save_geometry())
         self.root.bind("<Control-equal>", lambda e: self.font_bigger())
         self.root.bind("<Control-plus>",  lambda e: self.font_bigger())
         self.root.bind("<Control-minus>", lambda e: self.font_smaller())
@@ -146,11 +147,11 @@ class SubtitleWindow:
         self.root.configure(bg=bg)
         self.outer.configure(bg=self._lighter(bg,35))
         self.inner.configure(bg=bg)
-        self.text.configure(bg=bg)
+        self.text.configure(bg=bg); save_config(self.cfg)
 
     def _apply_font_color(self, fg):
         self.cfg["fg_color"] = fg
-        self.text.configure(fg=fg)
+        self.text.configure(fg=fg); save_config(self.cfg)
 
     # ─── edge ───────────────────────────────────────────────────
     def _detect_edge(self, event):
@@ -265,29 +266,32 @@ class SubtitleWindow:
 
     # ─── UI actions ────────────────────────────────────────────
     def font_bigger(self):
-        self.cfg["font_size"] = min(self.cfg["font_size"]+2, 72); self._apply_font()
+        self.cfg["font_size"] = min(self.cfg["font_size"]+2, 72); self._apply_font(); save_config(self.cfg)
     def font_smaller(self):
-        self.cfg["font_size"] = max(self.cfg["font_size"]-2, 12); self._apply_font()
+        self.cfg["font_size"] = max(self.cfg["font_size"]-2, 12); self._apply_font(); save_config(self.cfg)
     def opacity_up(self):
         self.cfg["opacity"] = min(round(self.cfg["opacity"]+0.05,2), 1.0)
-        self.root.attributes('-alpha', self.cfg["opacity"])
+        self.root.attributes('-alpha', self.cfg["opacity"]); save_config(self.cfg)
     def opacity_down(self):
         self.cfg["opacity"] = max(round(self.cfg["opacity"]-0.05,2), 0.25)
-        self.root.attributes('-alpha', self.cfg["opacity"])
+        self.root.attributes('-alpha', self.cfg["opacity"]); save_config(self.cfg)
     def toggle_always_on_top(self):
         self.cfg["always_on_top"] = self._top_var.get()
-        self.root.attributes('-topmost', self.cfg["always_on_top"])
+        self.root.attributes('-topmost', self.cfg["always_on_top"]); save_config(self.cfg)
     def reset_size(self):
-        self.root.geometry(default_geometry())
+        self.root.geometry(default_geometry()); save_config(self.cfg)
     def _apply_font(self):
         self.text.configure(font=(self.cfg["font_family"], self.cfg["font_size"]))
 
     def _on_close(self):
         self.running = False
-        self.cfg["geometry"] = self.root.geometry()
-        save_config(self.cfg)
+        self._save_geometry()
         self._kill_recognizer()
         self.root.destroy()
+
+    def _save_geometry(self):
+        self.cfg["geometry"] = self.root.geometry()
+        save_config(self.cfg)
 
     # ─── recognizer subprocess ─────────────────────────────────
     def _start_recognizer(self):
