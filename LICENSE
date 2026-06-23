@@ -22,11 +22,11 @@ SOFTWARE.
 
 ---
 
-This project includes adapted code from TMSpeech (MIT):
-https://github.com/jxlpzqc/TMSpeech
-
-Speech model: SenseVoice by Alibaba FunAudioLLM:
+Official speech model: SenseVoice by Alibaba FunAudioLLM
 https://github.com/FunAudioLLM/SenseVoice
 
-Inference engine: sherpa-onnx (Apache 2.0):
+ONNX model conversion: sherpa-onnx community (Apache 2.0)
 https://github.com/k2-fsa/sherpa-onnx
+
+ASR pipeline adapted from TMSpeech (MIT):
+https://github.com/jxlpzqc/TMSpeech
