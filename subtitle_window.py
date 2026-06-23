@@ -6,7 +6,7 @@ Accepts optional recognizer command after '--' to auto-manage the process.
 
 import tkinter as tk
 from tkinter import Menu
-import os, sys, json, subprocess, signal
+import os, sys, json, subprocess, signal, ctypes
 
 STATUS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'subtitle_status.txt')
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'subtitle_config.json')
@@ -42,6 +42,31 @@ def load_config():
         with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
             return {**DEFAULTS, **json.load(f)}
     except: return dict(DEFAULTS)
+
+def default_geometry(w=800, h=180, margin=50):
+    """Return bottom-center geometry string: WxH+X+Y, sitting above taskbar."""
+    try:
+        # Windows work area (screen minus taskbar)
+        class RECT(ctypes.Structure):
+            _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long),
+                        ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+        rect = RECT()
+        ctypes.windll.user32.SystemParametersInfoW(0x30, 0, ctypes.byref(rect), 0)  # SPI_GETWORKAREA
+        wa_w, wa_h = rect.right - rect.left, rect.bottom - rect.top
+        wa_x, wa_y = rect.left, rect.top
+    except Exception:
+        # Fallback: use tk screen size with estimated taskbar
+        root_temp = tk.Tk()
+        root_temp.withdraw()
+        wa_w = root_temp.winfo_screenwidth()
+        wa_h = root_temp.winfo_screenheight() - 50  # estimate taskbar
+        wa_x, wa_y = 0, 0
+        root_temp.destroy()
+
+    x = wa_x + (wa_w - w) // 2
+    y = wa_y + wa_h - h - margin
+    return f"{w}x{h}+{x}+{y}"
+
 
 def save_config(cfg):
     try:
@@ -81,9 +106,9 @@ class SubtitleWindow:
         )
         self.text.pack(fill=tk.BOTH, expand=True)
 
-        geo = self.cfg.get("geometry", "800x180+200+150")
+        geo = self.cfg.get("geometry", default_geometry())
         try:              self.root.geometry(geo)
-        except Exception: self.root.geometry("800x180+200+150")
+        except Exception: self.root.geometry(default_geometry())
 
         for w in (self.root, self.outer, self.inner, self.text):
             w.bind("<Button-1>", self._on_left_down)
@@ -253,7 +278,7 @@ class SubtitleWindow:
         self.cfg["always_on_top"] = self._top_var.get()
         self.root.attributes('-topmost', self.cfg["always_on_top"])
     def reset_size(self):
-        self.root.geometry("800x180+200+150")
+        self.root.geometry(default_geometry())
     def _apply_font(self):
         self.text.configure(font=(self.cfg["font_family"], self.cfg["font_size"]))
 
