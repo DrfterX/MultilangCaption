@@ -80,18 +80,24 @@ System Audio → WASAPI Loopback → SenseVoice ASR → status file → tkinter 
 
 ## Model
 
-SenseVoice multilingual model by Alibaba, converted to ONNX by [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx).
+The speech recognition model is **SenseVoice-Small**, originally developed by Alibaba's [FunAudioLLM](https://github.com/FunAudioLLM/SenseVoice) team.
 
-- `model.onnx` — 895MB
-- `tokens.txt` — 309KB
-- `silero_vad.onnx` — 629KB
+Since the official FunASR SDK enforces online verification at startup, the community (sherpa-onnx contributors) converted the PyTorch model to the open ONNX format, enabling true offline inference.
+
+```
+Alibaba SenseVoice (PyTorch)  →  community ONNX conversion  →  this project uses ONNX via sherpa-onnx
+```
+
+- `model.onnx` — 895MB (converted from official SenseVoice-Small)
+- `tokens.txt` — 309KB vocabulary
+- `silero_vad.onnx` — 629KB voice activity detection
 
 Auto-downloaded on first run. No GitHub LFS needed.
 
 ## Credits & License
 
-- ASR pipeline adapted from [TMSpeech](https://github.com/jxlpzqc/TMSpeech) (MIT)
-- Speech model: [SenseVoice](https://github.com/FunAudioLLM/SenseVoice) by Alibaba FunAudioLLM
-- Inference engine: [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) (Apache 2.0)
+- Official speech model: [SenseVoice](https://github.com/FunAudioLLM/SenseVoice) by Alibaba FunAudioLLM
+- ONNX model conversion: [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) community (Apache 2.0)
+- ASR pipeline adapted from: [TMSpeech](https://github.com/jxlpzqc/TMSpeech) (MIT)
 - Model hosting: [ModelScope](https://modelscope.cn)
 - This project: MIT License
