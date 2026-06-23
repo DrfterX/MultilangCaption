@@ -1,5 +1,7 @@
 # MultilangCaption
 
+**English** | [中文](README_CN.md)
+
 日本語・中文・English・한국어・粵語 のリアルタイム字幕オーバーレイ。  
 A borderless, semi-transparent real-time multilingual subtitle overlay for **Windows 10**.
 
