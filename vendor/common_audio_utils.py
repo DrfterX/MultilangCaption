@@ -364,6 +364,21 @@ class MyPrinter:
                 self._completed_lines = self._completed_lines[-self._max_history:]
 
 
+def get_default_loopback(p_audio):
+    """Return the default speaker loopback device index, or None."""
+    try:
+        wasapi_info = p_audio.get_host_api_info_by_type(pyaudio.paWASAPI)
+        default_speakers = p_audio.get_device_info_by_index(wasapi_info["defaultOutputDevice"])
+        if default_speakers.get("isLoopbackDevice", False):
+            return default_speakers['index']
+        for loopback in p_audio.get_loopback_device_info_generator():
+            if default_speakers["name"] in loopback["name"]:
+                return loopback['index']
+    except Exception:
+        pass
+    return None
+
+
 def select_input_device(devices, p_audio):
     """弹出tkinter窗口让用户选择输入设备或loopback设备（支持多选）"""
     # 过滤有输入通道的设备（普通输入设备）
