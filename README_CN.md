@@ -80,18 +80,24 @@ SenseVoice 模型自动检测语言：
 
 ## 模型
 
-阿里 SenseVoice 多语言模型，由 [k2-fsa/sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) 转换为 ONNX 格式。
+语音识别模型为 **SenseVoice-Small**，由阿里 [FunAudioLLM](https://github.com/FunAudioLLM/SenseVoice) 团队开发。
 
-- `model.onnx` — 895MB
-- `tokens.txt` — 309KB
-- `silero_vad.onnx` — 629KB
+由于官方 FunASR SDK 启动时强制联网校验，sherpa-onnx 社区将原始 PyTorch 模型转换为通用 ONNX 格式，实现真正离线推理。
+
+```
+阿里 SenseVoice (PyTorch)  →  社区 ONNX 转换  →  本项目通过 sherpa-onnx 使用
+```
+
+- `model.onnx` — 895MB（由官方 SenseVoice-Small 模型转换而来）
+- `tokens.txt` — 309KB 词表
+- `silero_vad.onnx` — 629KB 语音活动检测
 
 首次运行自动下载，无需 GitHub LFS。
 
 ## 致谢 & 开源协议
 
-- ASR 管线改编自 [TMSpeech](https://github.com/jxlpzqc/TMSpeech)（MIT）
-- 语音模型：阿里 [FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)
-- 推理引擎：[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)（Apache 2.0）
+- 官方语音模型：[FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)（阿里）
+- ONNX 模型转换：[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) 社区（Apache 2.0）
+- ASR 管线改编自：[TMSpeech](https://github.com/jxlpzqc/TMSpeech)（MIT）
 - 模型托管：[ModelScope](https://modelscope.cn)
 - 本项目：MIT License
