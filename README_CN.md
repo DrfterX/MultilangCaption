@@ -91,6 +91,7 @@ SenseVoice 模型自动检测语言：
 ## 致谢 & 开源协议
 
 - ASR 管线改编自 [TMSpeech](https://github.com/jxlpzqc/TMSpeech)（MIT）
+- 语音模型：阿里 [FunAudioLLM/SenseVoice](https://github.com/FunAudioLLM/SenseVoice)
 - 推理引擎：[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)（Apache 2.0）
 - 模型托管：[ModelScope](https://modelscope.cn)
 - 本项目：MIT License
