@@ -91,6 +91,7 @@ Auto-downloaded on first run. No GitHub LFS needed.
 ## Credits & License
 
 - ASR pipeline adapted from [TMSpeech](https://github.com/jxlpzqc/TMSpeech) (MIT)
+- Speech model: [SenseVoice](https://github.com/FunAudioLLM/SenseVoice) by Alibaba FunAudioLLM
 - Inference engine: [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) (Apache 2.0)
 - Model hosting: [ModelScope](https://modelscope.cn)
 - This project: MIT License
