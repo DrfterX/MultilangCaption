@@ -4,6 +4,10 @@
 
 A borderless, semi-transparent real-time multilingual subtitle overlay for **Windows 10**.
 
+Captures **any system audio** — browsers, local videos, music, games, meetings — via WASAPI loopback.
+Works perfectly even when speakers are **muted**, since it captures the digital audio stream
+before it reaches the hardware output.
+
 > **Why Windows 10?**  
 > Windows 11 and macOS Sequoia already have built-in live captions.  
 > This tool brings the same experience to Windows 10 — fully offline, no cloud required.
