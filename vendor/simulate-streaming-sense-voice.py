@@ -35,7 +35,8 @@ from common_audio_utils import (
     pyaudio, sherpa_onnx, np,
     sample_rate, assert_file_exists,
     start_recording, MyPrinter, select_input_device,
-    get_audio_devices, cleanup_recording_process
+    get_audio_devices, cleanup_recording_process,
+    get_default_loopback,
 )
 
 vad_model_url = 'https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx'
@@ -127,6 +128,13 @@ def get_args():
         help="字幕窗口状态文件路径。设置后识别结果会实时写入该文件供字幕窗口读取。",
     )
 
+    parser.add_argument(
+        "--auto-device",
+        action="store_true",
+        default=False,
+        help="自动选择默认扬声器回环设备，跳过设备选择对话框",
+    )
+
     return parser.parse_args()
 
 
@@ -174,7 +182,17 @@ def main():
 
     # 如果命令行没有指定设备，弹出选择框
     selected_device_indices = []
-    if args.device < 0:
+    if args.auto_device:
+        # Auto-select default speaker loopback
+        idx = get_default_loopback(p_temp)
+        if idx is not None:
+            selected_device_indices = [idx]
+            print(f"[auto] 已自动选择默认扬声器回环设备: {idx}", file=sys.stderr)
+        else:
+            # Fallback to dialog if loopback not found
+            print("[auto] 未找到回环设备，弹出选择对话框", file=sys.stderr)
+            selected_device_indices = select_input_device(devices, p_temp)
+    elif args.device < 0:
         selected_device_indices = select_input_device(devices, p_temp)
         if not selected_device_indices:
             # 如果没有选择设备，使用默认输入设备
